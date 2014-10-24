@@ -1,0 +1,21 @@
+{
+    "name": "spanjeta/yii2-backup",
+    "description": "Database Backup and Restore functionality",
+    "type": "yii2-extension",
+    "keywords": ["yii2","Database", "Backup","Restore"],
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Shiv Charan Panjeta",
+            "email": "shivcharan.panjeta@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "spanjeta\\mobules\backup\\": ""
+        }
+    }
+}
