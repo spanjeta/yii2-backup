@@ -2,7 +2,7 @@
 
 namespace spanjeta\modules\backup;
 
-class Mobule extends \yii\base\Module
+class Module extends \yii\base\Module
 {
    public $controllerNamespace = 'spanjeta\modules\backup\controllers';
 
