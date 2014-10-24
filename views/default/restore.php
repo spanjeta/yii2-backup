@@ -1,7 +1,13 @@
 <?php
+$this->params ['breadcrumbs'] [] = [ 
+		'label' => 'Manage',
+		'url' => array (
+				'index' 
+		) 
+];
 $this->params['breadcrumbs'][]= [
-'label'	=> 'Backup',
-'url'	=> array('backup'),
+'label'	=> 'Restore',
+'url'	=> array('restore'),
 ];?>
 
 

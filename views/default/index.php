@@ -28,7 +28,7 @@ echo $this->render ( '_list', array (
 		</div>
 		<div class="col-md-4">
 			<?php
-			
+			use yii\widgets\Menu;
 echo Menu::widget ( [ 
 					'items' => $this->context->menu 
 			] );
