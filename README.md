@@ -1,6 +1,6 @@
-Yii2 Backup Databse
+Yii2 Backup and Restore Database
 ===================
-Databse Backup and Restore functionality
+Database Backup and Restore functionality
 
 Installation
 ------------
