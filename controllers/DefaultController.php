@@ -15,7 +15,7 @@ class DefaultController extends Controller
 	public $file_name;
 	public $_path = null;
 	public $back_temp_file = 'db_backup_';
-	public $layout = '//layout2';
+	//public $layout = '//layout2';
 
 	protected function getPath()
 	{

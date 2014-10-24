@@ -1,10 +1,13 @@
 <div class="backup-default-index">
 
 <?php
-$this->params['breadcrumbs'][]= [
-		'label'	=> 'Manage',
-		'url'	=> array('index'),
-];?>
+$this->params ['breadcrumbs'] [] = [ 
+		'label' => 'Manage',
+		'url' => array (
+				'index' 
+		) 
+];
+?>
 
 <?php if(Yii::$app->session->hasFlash('success')): ?>
 <div class="alert alert-success">
@@ -14,8 +17,24 @@ $this->params['breadcrumbs'][]= [
 
 <h1>Manage database backup files</h1>
 
-<?php echo $this->render('_list', array(
-		'dataProvider'=>$dataProvider,
-));
+	<div class="row">
+		<div class="col-md-8">
+<?php
+
+echo $this->render ( '_list', array (
+		'dataProvider' => $dataProvider 
+) );
 ?>
+		</div>
+		<div class="col-md-4">
+			<?php
+			
+echo Menu::widget ( [ 
+					'items' => $this->context->menu 
+			] );
+			?>
+
+		</div>
+	</div>
+
 </div>
