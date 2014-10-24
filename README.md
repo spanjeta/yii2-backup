@@ -40,6 +40,8 @@ Advanced ```[backend|frontend|common]/config/main.php```
             ...
         ],
 
+make sure you create a writable directory named _backup on app root directory.
+
 Usage
 -----
 
