@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "spanjeta\\mobules\backup\\": ""
+            "spanjeta\\modules\backup\\": ""
         }
     }
 }
