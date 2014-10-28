@@ -33,7 +33,7 @@ Advanced ```[backend|frontend|common]/config/main.php```
 
 >
         'modules'    => [
-            'crud' => [
+            'backup' => [
                 'class' => 'spanjeta\modules\backup\Module',
             ],
             ...
