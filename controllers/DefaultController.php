@@ -320,7 +320,7 @@ class DefaultController extends Controller
 		if(isset($_POST['UploadForm']))
 		{
 			$model->attributes = $_POST['UploadForm'];
-			$model->upload_file = CUploadedFile::getInstance($model,'upload_file');
+			$model->upload_file = \yii\web\UploadedFile::getInstance($model,'upload_file');
 			if($model->upload_file->saveAs($this->path . $model->upload_file))
 			{
 				// redirect to success page
