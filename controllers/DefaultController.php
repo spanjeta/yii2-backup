@@ -6,6 +6,7 @@ use Yii;
 use yii\web\Controller;
 use spanjeta\modules\backup\models\UploadForm;
 use yii\data\ArrayDataProvider;
+use yii\web\HttpException;
 
 class DefaultController extends Controller
 {
@@ -219,8 +220,10 @@ class DefaultController extends Controller
 		Yii::$app->session->setFlash('success', $message);
 		return $this->redirect(array('index'));
 	}
-	public function actionDelete($file = null)
+	public function actionDelete($id)
 	{
+	    $list = $this->getFileList();
+	    $file = $list[$id];
 		$this->updateMenuItems();
 		if ( isset($file))
 		{
@@ -228,8 +231,8 @@ class DefaultController extends Controller
 			if ( file_exists($sqlFile))
 				unlink($sqlFile);
 		}
-		else throw new CHttpException(404, Yii::t('app', 'File not found'));
-		$this->actionIndex();
+		else throw new HttpException(404, Yii::t('app', 'File not found'));
+		return $this->actionIndex();
 	}
 
 	public function actionDownload($file = null)
@@ -244,61 +247,47 @@ class DefaultController extends Controller
 				$request->sendFile(basename($sqlFile),file_get_contents($sqlFile));
 			}
 		}
-		throw new CHttpException(404, Yii::t('app', 'File not found'));
+		throw new HttpException(404, Yii::t('app', 'File not found'));
 	}
 
+	protected function getFileList()
+	{
+	    $path = $this->path;
+	    $dataArray = array();
+	    $list = array();
+	    $list_files = glob($path .'*.sql');
+	    if ($list_files )
+	    {
+	        $list = array_map('basename',$list_files);
+	        sort($list);
+	    }
+	    return $list;
+	}
 	public function actionIndex()
 	{
 		//$this->layout = 'column1';
 		$this->updateMenuItems();
-		$path = $this->path;
-		$dataArray = array();
-
-		$list_files = glob($path .'*.sql');
-		if ($list_files )
-		{
-			$list = array_map('basename',$list_files);
-			sort($list);
+		
+			$list = $this->getFileList();
 			foreach ( $list as $id=>$filename )
 			{
 				$columns = array();
 				$columns['id'] = $id;
 				$columns['name'] = basename ( $filename);
-				$columns['size'] = filesize ( $path. $filename);
+				$columns['size'] = filesize ( $this->path. $filename);
 
-				$columns['create_time'] = date( 'Y-m-d H:i:s', filectime($path .$filename) );
-				$columns['modified_time'] = date( 'Y-m-d H:i:s', filemtime($path .$filename) );
+				$columns['create_time'] = date( 'Y-m-d H:i:s', filectime($this->path .$filename) );
+				$columns['modified_time'] = date( 'Y-m-d H:i:s', filemtime($this->path .$filename) );
 
 				$dataArray[] = $columns;
 			}
-		}
+	
 		$dataProvider = new ArrayDataProvider(['allModels'=>$dataArray]);
 		return $this->render('index', array(
 				'dataProvider' => $dataProvider,
 		));
 	}
-	public function actionSyncdown()
-	{
-		$tables = $this->getTables();
 
-		if(!$this->StartBackup())
-		{
-			//render error
-			return $this->render('index');
-
-		}
-
-		foreach($tables as $tableName)
-		{
-			$this->getColumns($tableName);
-		}
-		foreach($tables as $tableName)
-		{
-			$this->getData($tableName);
-		}
-		$this->EndBackup();
-		return  $this->actionDownload(basename($this->file_name));
-	}
 
 	public function actionRestore($file = null)
 	{
@@ -357,7 +346,7 @@ class DefaultController extends Controller
 					$this->menu[] = array('label'=>Yii::t('app', 'List Backup') , 'url'=>array('index'));
 					$this->menu[] = array('label'=>Yii::t('app', 'Create Backup') , 'url'=>array('create'));
 					$this->menu[] = array('label'=>Yii::t('app', 'Upload Backup') , 'url'=>array('upload'));
-					$this->menu[] = array('label'=>Yii::t('app', 'Restore Backup') , 'url'=>array('restore'));
+				//	$this->menu[] = array('label'=>Yii::t('app', 'Restore Backup') , 'url'=>array('restore'));
 					$this->menu[] = array('label'=>Yii::t('app', 'Clean Database') , 'url'=>array('clean'));
 					$this->menu[] = array('label'=>Yii::t('app', 'View Site') , 'url'=>Yii::$app->HomeUrl);
 				}

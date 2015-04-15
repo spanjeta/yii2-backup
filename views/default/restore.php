@@ -1,4 +1,6 @@
 <?php
+use yii\helpers\Html;
+
 $this->params ['breadcrumbs'] [] = [ 
 		'label' => 'Manage',
 		'url' => array (
@@ -26,5 +28,5 @@ $this->params['breadcrumbs'][]= [
 	<?php if(isset($error)) echo $error; else echo 'Done';?>
 </p>
 <p>
-	<?php echo CHtml::link('View Site',Yii::app()->HomeUrl)?>
+	<?php echo Html::link('View Site',Yii::app()->HomeUrl)?>
 </p>
