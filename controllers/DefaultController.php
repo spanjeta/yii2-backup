@@ -72,9 +72,12 @@ class DefaultController extends Controller {
 		$cmd = Yii::$app->db->createCommand ( $sql );
 		$dataReader = $cmd->query ();
 		
-		$data_string = '';
+		if ($this->fp) {
+			$this->writeComment ( 'TABLE DATA ' . $tableName );
+		}
 		
 		foreach ( $dataReader as $data ) {
+			$data_string = '';
 			$itemNames = array_keys ( $data );
 			$itemNames = array_map ( "addslashes", $itemNames );
 			$items = join ( '`,`', $itemNames );
@@ -86,18 +89,15 @@ class DefaultController extends Controller {
 			if ($values != "") {
 				$data_string .= "INSERT INTO `$tableName` (`$items`) VALUES" . rtrim ( $values, "," ) . ";;;" . PHP_EOL;
 			}
+			if ($this->fp) {
+				fwrite ( $this->fp, $data_string );
+			}
 		}
-		
-		if ($data_string == '')
-			return null;
 		
 		if ($this->fp) {
 			$this->writeComment ( 'TABLE DATA ' . $tableName );
-			$final = $data_string . PHP_EOL . PHP_EOL . PHP_EOL;
+			$final = PHP_EOL . PHP_EOL . PHP_EOL;
 			fwrite ( $this->fp, $final );
-		} else {
-			$this->tables [$tableName] ['data'] = $data_string;
-			return $data_string;
 		}
 	}
 	public function getTables($dbName = null) {
@@ -206,16 +206,19 @@ class DefaultController extends Controller {
 				'index' 
 		) );
 	}
-	public function actionDelete($file) {
-		$dumpFile = $this->path . basename ( $file );
-		if (unlink ( $dumpFile )) {
-			Yii::$app->session->setFlash ( 'success', Yii::t ( 'app', 'Backup deleted successfully.' ) );
-		} else {
-			Yii::$app->session->setFlash ( 'error', Yii::t ( 'app', 'Error deleting Backup.' ) );
-		}
-		return $this->redirect ( [ 
-				'index' 
-		] );
+	public function actionDelete($id) {
+		$list = $this->getFileList ();
+		$list = array_merge ( $list, $this->getFileList ( '*.zip' ) );
+		$list = array_reverse($list);
+		$file = $list [$id];
+		$this->updateMenuItems ();
+		if (isset ( $file )) {
+			$sqlFile = $this->path . basename ( $file );
+			if (file_exists ( $sqlFile ))
+				unlink ( $sqlFile );
+		} else
+			throw new HttpException ( 404, Yii::t ( 'app', 'File not found' ) );
+		return $this->redirect(['index']);
 	}
 	public function actionDownload($file = null) {
 		$this->updateMenuItems ();
