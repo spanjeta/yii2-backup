@@ -8,7 +8,9 @@ class Module extends \yii\base\Module {
 	public $fileList;
 	public function init() {
 		parent::init ();
-		
+		if (\Yii::$app instanceof \yii\console\Application) {
+			$this->controllerNamespace = 'spanjeta\modules\backup\commands';
+		}
 		// custom initialization code goes here
 	}
 	public function getFileList() {

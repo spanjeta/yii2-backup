@@ -1,4 +1,6 @@
-<div class="backup-default-index">
+
+<div class="wrapper main-content-spacing">
+	<div class="backup-default-index">
 
 <?php
 $this->params ['breadcrumbs'] [] = [ 
@@ -15,26 +17,30 @@ $this->params ['breadcrumbs'] [] = [
 </div>
 <?php endif; ?>
 
-<h1>Manage database backup files</h1>
+		<div class="panel">
 
-	<div class="row">
-		<div class="col-md-8">
-<?php
+					<header class="panel-heading form-spacing clearfix">
+					<h4 style="margin:0;" class="clearfix">Manage database backup
+					
+						files
+						<span class="pull-right">
+						<a href="<?= \yii\helpers\Url::toRoute(['create']) ?>" class="btn btn-success"> <i class="fa fa-plus"></i> Create Backup </a>
+						</span></h4>
+						</header>
+					<div class="panel-body">
+				
+						<?php
+						
+						echo $this->render ( '_list', array (
+								'dataProvider' => $dataProvider 
+						) );
+						?>
+								
+			
+					</div>
 
-echo $this->render ( '_list', array (
-		'dataProvider' => $dataProvider 
-) );
-?>
 		</div>
-		<div class="col-md-4">
-			<?php
-			use yii\widgets\Menu;
-echo Menu::widget ( [ 
-					'items' => $this->context->menu 
-			] );
-			?>
-
-		</div>
+		
+		
 	</div>
-
 </div>

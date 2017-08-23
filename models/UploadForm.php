@@ -30,10 +30,9 @@ class UploadForm extends Model
 		if(!isset($this->scenario))
 			$this->scenario = 'upload';
 
-		return [
-				['upload_file', 'required'],
-				[['file'], 'file', 'extensions' => 'sql'],
-		];
+		return array(
+				array('upload_file', 'required'),
+		);
 	}
 
 	/**
