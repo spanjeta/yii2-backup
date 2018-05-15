@@ -2,11 +2,11 @@
 
 namespace spanjeta\modules\backup\helpers;
 
-use yii\base\Object;
+use yii\base\BaseObject;
 use Yii;
 use yii\db\Exception;
 
-class MysqlBackup extends Object {
+class MysqlBackup extends BaseObject {
 	public $tables = [ ];
 	public $fp;
 	public $file_name;
