@@ -137,7 +137,7 @@ class MysqlBackup extends BaseObject {
 			$values = "\n" . $valueString;
 			
 			if ($values != "") {
-				$data_string = "INSERT INTO `$tableName` (`$items`) VALUES" . rtrim ( $values, "," ) . ";;;" . PHP_EOL;
+				$data_string = "INSERT INTO `$tableName` (`$items`) VALUES" . rtrim ( $values, "," ) . ";" . PHP_EOL;
 				if ($this->fp)
 					fwrite ( $this->fp, $data_string );
 			}
