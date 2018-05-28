@@ -130,17 +130,24 @@ class MysqlBackup extends BaseObject {
 			$itemNames = array_keys ( $data );
 			$itemNames = array_map ( "addslashes", $itemNames );
 			$items = join ( '`,`', $itemNames );
-			$itemValues = array_values ( $data );
-			$itemValues = array_map ( "addslashes", $itemValues );
-			$valueString = join ( "','", $itemValues );
-			$valueString = "('" . $valueString . "'),";
-			$values = "\n" . $valueString;
-			
-			if ($values != "") {
-				$data_string = "INSERT INTO `$tableName` (`$items`) VALUES" . rtrim ( $values, "," ) . ";;;" . PHP_EOL;
-				if ($this->fp)
-					fwrite ( $this->fp, $data_string );
-			}
+            $itemValues = array_values ( $data );
+            foreach ($itemValues as $i => $value) {
+                if ($value === null) {
+                    $itemValues[$i] = 'NULL';
+                } else {
+                    $itemValues[$i] = "'" . addslashes($value) . "'";
+                }
+            }
+
+            $valueString = implode(',', $itemValues );
+            $valueString = '(' . $valueString . '),';
+            $values = "\n" . $valueString;
+
+            if ($values != "") {
+                $data_string = "INSERT INTO `$tableName` (`$items`) VALUES" . $values . ";;;" . PHP_EOL;
+                if ($this->fp)
+                    fwrite ( $this->fp, $data_string );
+            }
 		}
 		
 		if ($this->fp)
